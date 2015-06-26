@@ -1,0 +1,79 @@
+#
+#  $Id: Makefile.yamcha,v 1.1 2005/10/10 16:04:46 mihai Exp $;
+#
+
+# TOOLDIR MUST be set in the environment!
+#TOOLDIR    = /usr/local/libexec/yamcha
+
+SVM_PARAM  = -t 1 -d 2 -c 1
+FEATURE    = F:-2..2:0.. T:-2..-1
+DIRECTION  =
+MULTI_CLASS = 2
+DESTDIR = 
+
+# data
+CORPUS = 
+MODEL  =
+
+# misc tools
+SVM_LEARN = svm_learn
+PERL      = perl -w
+GZIP      = /bin/gzip
+YAMCHA    = yamcha
+RM        = rm -f
+SORT      = sort
+UNIQ      = uniq
+
+# Do not modify 
+all:
+	echo "Usage: make CORPUS=Your-Corpus-File MODEL=Model-Prefix-Name TOOLDIR=Your-Tooldir-Directory train"
+
+train: select convert learn zip se compile clean_model
+
+select:
+	echo "Yamcha: starting select task..."
+	$(YAMCHA) $(DIRECTION) -F'$(FEATURE)' -o $(MODEL).data $(CORPUS) 
+	echo "Yamcha: finished select task."
+
+convert:
+	echo "Yamcha: starting convert task..."
+	$(PERL) $(TOOLDIR)/mkparam   $(MODEL) < $(MODEL).data
+	$(PERL) $(TOOLDIR)/mksvmdata $(MODEL)
+	$(RM) $(MODEL).data
+	$(SORT) < $(MODEL).svmdata | $(UNIQ) | $(SORT) > $(MODEL).svmdata.sort
+	mv -f $(MODEL).svmdata.sort $(MODEL).svmdata
+	echo "Yamcha: finished convert task."
+
+learn:
+	echo "Yamcha: starting learn task..."
+	$(PERL) $(TOOLDIR)/svm_learn_wrapper -t$(MULTI_CLASS) -s $(SVM_LEARN) -o "$(SVM_PARAM)" $(MODEL).svmdata $(MODEL).svmmodel 2>&1 | tee $(MODEL).log
+	echo "Yamcha: finished learn task."
+
+zip:
+	echo "Yamcha: starting zip task..."
+	$(PERL) $(TOOLDIR)/zipmodel $(MODEL).param $(MODEL).svmmodel > $(MODEL).txtmodel
+	$(GZIP) -f $(MODEL).txtmodel
+	$(RM) $(MODEL).param $(MODEL).svmmodel
+	echo "Yamcha: finished zip task."
+
+se:	
+	echo "Yamcha: starting se task..."
+	$(GZIP) -dc $(MODEL).txtmodel.gz | $(PERL) $(TOOLDIR)/showse > $(MODEL).se
+	echo "Yamcha: finished se task."
+
+compile:
+	echo "Yamcha: starting compile task..."
+	$(PERL) $(TOOLDIR)/mkmodel -t $(TOOLDIR) $(MODEL).txtmodel.gz $(MODEL)
+	echo "Yamcha: finished compile task."
+
+clean_model:
+	rm -f $(MODEL).samples
+	rm -f $(MODEL).log
+	rm -f $(MODEL).se
+	rm -f $(MODEL).svmdata
+	rm -f $(MODEL).txtmodel.gz
+
+check:
+clean:
+distclean:
+distdir:
