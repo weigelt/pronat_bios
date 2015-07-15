@@ -5,7 +5,7 @@
     <artifactId>parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>BIOS</artifactId>
+  <artifactId>parseBios</artifactId>
   <version>1.0-SNAPSHOT</version>
   
         <repositories>
