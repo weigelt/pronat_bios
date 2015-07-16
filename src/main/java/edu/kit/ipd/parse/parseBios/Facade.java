@@ -14,15 +14,6 @@ import bios.common.PosToken;
 
 public class Facade {
 
-	public static void main(String[] args) throws Exception {
-		// TODO Auto-generated method stub
-		Facade a = new Facade();
-		String[] words = { "My", "Name", "is", "Markus" };
-		String[] pos = { "PRP$", "NN", "VBZ", "NNP" };
-		a.parse(words, pos);
-
-	}
-
 	public void parseFile(File file) throws Exception {
 		Chunker chk = new Chunker("target/classes/model", "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
 		FileReader fileReader = new FileReader(file);
