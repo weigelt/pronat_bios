@@ -8,11 +8,16 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import bios.chunker.Chunker;
 import bios.chunker.ChunkerConstants;
 import bios.common.PosToken;
 
 public class Facade {
+
+	private static final Logger logger = LoggerFactory.getLogger(Facade.class);
 
 	public void parseFile(File file) throws Exception {
 		Chunker chk = new Chunker("target/classes/model", "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
