@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import edu.kit.ipd.parse.parsebios.Facade;
 
-public class simpleFacadeTest {
+public class SimpleFacadeTest {
 
 	@Test
 	public void test() {
