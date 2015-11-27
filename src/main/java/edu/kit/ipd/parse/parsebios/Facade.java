@@ -1,17 +1,18 @@
 package edu.kit.ipd.parse.parsebios;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.FileSystem;
+import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,12 +26,12 @@ public class Facade {
 	private static final Logger logger = LoggerFactory.getLogger(Facade.class);
 	private static final String resourceModelPath = "/model/conll.paum.cs.model";
 
-	public void parseFile(File file) throws Exception {
-		Chunker chk = new Chunker("target/classes/model", "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
-		FileReader fileReader = new FileReader(file);
-		BufferedReader br = new BufferedReader(fileReader);
-		chk.test(br, System.out);
-	}
+	//	public void parseFile(File file) throws Exception {
+	//		Chunker chk = new Chunker("target/classes/model", "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
+	//		FileReader fileReader = new FileReader(file);
+	//		BufferedReader br = new BufferedReader(fileReader);
+	//		chk.test(br, System.out);
+	//	}
 
 	public String[] parse(String[] words, String[] pos) {
 
@@ -64,6 +65,10 @@ public class Facade {
 	}
 
 	private Path copyResourcesToTempDir(List<String> resList) throws IOException, URISyntaxException {
+		Map<String, String> env = new HashMap<>();
+		env.put("create", "true");
+		FileSystem zipfs = FileSystems.getDefault();
+
 		Path tempDirPath = Files.createTempDirectory(null);
 		URL resourceUrl;
 		InputStream resourceIS;
@@ -71,8 +76,8 @@ public class Facade {
 
 		for (String res : resList) {
 			resourceUrl = getClass().getResource(res);
+			resourcePath = Paths.get(resourceUrl.toURI());
 			resourceIS = getClass().getResourceAsStream(res);
-			resourcePath = Paths.get(getClass().getResource(res).toURI());
 			Files.copy(resourceIS, tempDirPath.resolve(resourcePath.getFileName()));
 		}
 		return tempDirPath;
