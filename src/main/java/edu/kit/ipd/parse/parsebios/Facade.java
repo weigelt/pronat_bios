@@ -40,7 +40,8 @@ public class Facade {
 				FileSystem zipfs = FileSystems.newFileSystem(resourceUrl.toURI(), env);
 				Path resourcePath = Paths.get(resourceUrl.toURI());
 				logger.info("Loaded resource path {}", resourcePath.toString());
-				Chunker chk = new Chunker(resourcePath.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
+				Chunker chk = new Chunker(resourcePath.toAbsolutePath().toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true,
+						false);
 				logger.info("Chunker is {}", chk.toString());
 				ArrayList<PosToken> list = new ArrayList<PosToken>();
 				for (int i = 0; i < words.length; i++) {
