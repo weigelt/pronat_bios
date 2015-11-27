@@ -30,8 +30,11 @@ public class Facade {
 		try {
 			if (words != null && pos != null && words.length == pos.length) {
 				URL resourceUrl = getClass().getResource("/model");
+				logger.info("Loaded URL {}", resourceUrl.toString());
 				Path resourcePath = Paths.get(resourceUrl.toURI());
+				logger.info("Loaded resource path {}", resourcePath.toString());
 				Chunker chk = new Chunker(resourcePath.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
+				logger.info("Chunker is {}", chk.toString());
 				ArrayList<PosToken> list = new ArrayList<PosToken>();
 				for (int i = 0; i < words.length; i++) {
 					PosToken tmp = new PosToken(words[i], pos[i], -1, -1);
