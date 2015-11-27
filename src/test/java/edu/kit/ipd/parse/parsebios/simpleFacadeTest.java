@@ -1,9 +1,9 @@
-package parseBios;
+package edu.kit.ipd.parse.parsebios;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import edu.kit.ipd.parse.parseBios.Facade;
+import edu.kit.ipd.parse.parsebios.Facade;
 
 public class simpleFacadeTest {
 

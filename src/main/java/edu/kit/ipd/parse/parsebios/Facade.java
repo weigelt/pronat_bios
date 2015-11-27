@@ -1,4 +1,4 @@
-package edu.kit.ipd.parse.parseBios;
+package edu.kit.ipd.parse.parsebios;
 
 import java.io.BufferedReader;
 import java.io.File;
