@@ -33,7 +33,8 @@ public class Facade {
 				logger.info("Loaded URL {}", resourceUrl.toString());
 				Path resourcePath = Paths.get(resourceUrl.toURI());
 				logger.info("Loaded resource path {}", resourcePath.toString());
-				Chunker chk = new Chunker(resourcePath.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
+				//				Chunker chk = new Chunker(resourcePath.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
+				Chunker chk = new Chunker(resourceUrl.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
 				logger.info("Chunker is {}", chk.toString());
 				ArrayList<PosToken> list = new ArrayList<PosToken>();
 				for (int i = 0; i < words.length; i++) {
@@ -43,6 +44,9 @@ public class Facade {
 				return chk.predict(list, 0, list.size());
 			}
 		} catch (Exception e) {
+			System.out.println(e.getClass());
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 		return null;
 	}
