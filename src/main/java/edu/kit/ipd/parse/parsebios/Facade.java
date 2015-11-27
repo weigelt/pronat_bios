@@ -2,10 +2,10 @@ package edu.kit.ipd.parse.parsebios;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -67,16 +67,21 @@ public class Facade {
 	private Path copyResourcesToTempDir(List<String> resList) throws IOException, URISyntaxException {
 		Map<String, String> env = new HashMap<>();
 		env.put("create", "true");
-		FileSystem zipfs = FileSystems.getDefault();
-
+		//		FileSystem zipfs = FileSystems.newFileSystem(getClass().getResource(resList.get(0)).toURI(), env);
+		URI uri = getClass().getResource(resList.get(0)).toURI();
+		uri = uri.normalize();
+		System.out.println(uri.getPath());
+		FileSystem zipfs;
 		Path tempDirPath = Files.createTempDirectory(null);
 		URL resourceUrl;
 		InputStream resourceIS;
 		Path resourcePath;
-
+		//		System.out.println(zipfs.getSeparator());
 		for (String res : resList) {
 			resourceUrl = getClass().getResource(res);
 			resourcePath = Paths.get(resourceUrl.toURI());
+			System.out.println(resourcePath.getFileSystem().toString());
+			zipfs = resourcePath.getFileSystem();
 			resourceIS = getClass().getResourceAsStream(res);
 			Files.copy(resourceIS, tempDirPath.resolve(resourcePath.getFileName()));
 		}
