@@ -2,17 +2,12 @@ package edu.kit.ipd.parse.parsebios;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -34,7 +29,7 @@ public class Facade {
 	//	}
 
 	public String[] parse(String[] words, String[] pos) {
-
+		logger.info("Running Chunker");
 		List<String> resList = new ArrayList<String>() {
 			{
 				add(resourceModelPath);
@@ -48,7 +43,6 @@ public class Facade {
 
 				Path tempDirPath = copyResourcesToTempDir(resList);
 				Chunker chk = new Chunker(tempDirPath.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
-				logger.info("Chunker is {}", chk.toString());
 				ArrayList<PosToken> list = new ArrayList<PosToken>();
 				for (int i = 0; i < words.length; i++) {
 					PosToken tmp = new PosToken(words[i], pos[i], -1, -1);
@@ -57,33 +51,19 @@ public class Facade {
 				return chk.predict(list, 0, list.size());
 			}
 		} catch (Exception e) {
-			System.out.println(e.getClass());
-			System.out.println(e.getMessage());
 			e.printStackTrace();
 		}
 		return null;
 	}
 
 	private Path copyResourcesToTempDir(List<String> resList) throws IOException, URISyntaxException {
-		Map<String, String> env = new HashMap<>();
-		env.put("create", "true");
-		//		FileSystem zipfs = FileSystems.newFileSystem(getClass().getResource(resList.get(0)).toURI(), env);
-		URI uri = getClass().getResource(resList.get(0)).toURI();
-		uri = uri.normalize();
-		System.out.println(uri.getPath());
-		FileSystem zipfs;
 		Path tempDirPath = Files.createTempDirectory(null);
-		URL resourceUrl;
 		InputStream resourceIS;
-		Path resourcePath;
-		//		System.out.println(zipfs.getSeparator());
+		Path destPath;
 		for (String res : resList) {
-			resourceUrl = getClass().getResource(res);
-			resourcePath = Paths.get(resourceUrl.toURI());
-			System.out.println(resourcePath.getFileSystem().toString());
-			zipfs = resourcePath.getFileSystem();
 			resourceIS = getClass().getResourceAsStream(res);
-			Files.copy(resourceIS, tempDirPath.resolve(resourcePath.getFileName()));
+			destPath = Paths.get(tempDirPath.toString() + res.substring(res.lastIndexOf("/")));
+			Files.copy(resourceIS, destPath);
 		}
 		return tempDirPath;
 	}
