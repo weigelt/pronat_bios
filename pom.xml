@@ -22,6 +22,7 @@
 			<name>In Project Repo</name>
 			<url>file://${project.basedir}/src/main/resources/libs</url>
 		</repository>
+		
 	</repositories>
 
 	<dependencies>
