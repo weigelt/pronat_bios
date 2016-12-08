@@ -30,7 +30,7 @@ public class Facade {
 
 	public String[] parse(String[] words, String[] pos) {
 		logger.info("Running Chunker");
-		List<String> resList = new ArrayList<String>() {
+		final List<String> resList = new ArrayList<String>() {
 			{
 				add(resourceModelPath);
 				add(resourceModelPath + ".features");
@@ -41,26 +41,26 @@ public class Facade {
 		try {
 			if (words != null && pos != null && words.length == pos.length) {
 
-				Path tempDirPath = copyResourcesToTempDir(resList);
-				Chunker chk = new Chunker(tempDirPath.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
-				ArrayList<PosToken> list = new ArrayList<PosToken>();
+				final Path tempDirPath = copyResourcesToTempDir(resList);
+				final Chunker chk = new Chunker(tempDirPath.toString(), "conll.paum.cs.model", ChunkerConstants.PAUM, true, false);
+				final ArrayList<PosToken> list = new ArrayList<PosToken>();
 				for (int i = 0; i < words.length; i++) {
-					PosToken tmp = new PosToken(words[i], pos[i], -1, -1);
+					final PosToken tmp = new PosToken(words[i], pos[i], -1, -1);
 					list.add(tmp);
 				}
 				return chk.predict(list, 0, list.size());
 			}
-		} catch (Exception e) {
+		} catch (final Exception e) {
 			e.printStackTrace();
 		}
 		return null;
 	}
 
 	private Path copyResourcesToTempDir(List<String> resList) throws IOException, URISyntaxException {
-		Path tempDirPath = Files.createTempDirectory(null);
+		final Path tempDirPath = Files.createTempDirectory(null);
 		InputStream resourceIS;
 		Path destPath;
-		for (String res : resList) {
+		for (final String res : resList) {
 			resourceIS = getClass().getResourceAsStream(res);
 			destPath = Paths.get(tempDirPath.toString() + res.substring(res.lastIndexOf("/")));
 			Files.copy(resourceIS, destPath);
