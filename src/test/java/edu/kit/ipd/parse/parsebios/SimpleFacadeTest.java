@@ -33,11 +33,11 @@ public class SimpleFacadeTest {
 
 	@Test
 	public void testADVP2() {
-		String[] words = { "Open", "the", "door", "next", "to", "the", "dishwasher." };
-		String[] pos = { "VB", "DT", "NN", "JJ", "TO", "DT", "NN" };
-		String[] exp = { "B-SBAR", "B-NP", "I-NP", "I-NP", "B-VP", "B-ADVP", "B-VP" };
-		Facade a = new Facade();
-		String[] parse = a.parse(words, pos);
+		final String[] words = { "Open", "the", "door", "next", "to", "the", "dishwasher" };
+		final String[] pos = { "VB", "DT", "NN", "JJ", "TO", "DT", "NN" };
+		final String[] exp = { "B-VP", "B-NP", "I-NP", "B-NP", "B-PP", "B-NP", "I-NP" };
+		final Facade a = new Facade();
+		final String[] parse = a.parse(words, pos);
 		System.out.println(Arrays.deepToString(words));
 		System.out.println(Arrays.deepToString(parse));
 		Assert.assertArrayEquals(exp, parse);
