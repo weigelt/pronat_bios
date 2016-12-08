@@ -9,11 +9,11 @@ public class SimpleFacadeTest {
 
 	@Test
 	public void test() {
-		String[] words = { "My", "Name", "is", "Markus" };
-		String[] pos = { "PRP$", "NN", "VBZ", "NNP" };
-		String[] exp = { "B-NP", "I-NP", "B-VP", "B-NP" };
-		Facade a = new Facade();
-		String[] parse = a.parse(words, pos);
+		final String[] words = { "My", "Name", "is", "Markus" };
+		final String[] pos = { "PRP$", "NN", "VBZ", "NNP" };
+		final String[] exp = { "B-NP", "I-NP", "B-VP", "B-NP" };
+		final Facade a = new Facade();
+		final String[] parse = a.parse(words, pos);
 		Assert.assertArrayEquals(exp, parse);
 
 	}
