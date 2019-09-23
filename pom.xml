@@ -7,7 +7,7 @@
 		<version>0.0.3</version>
 	</parent>
 	<artifactId>parseBios</artifactId>
-	<version>1.0</version>
+	<version>1.0-SNAPSHOT</version>
 	<repositories>
 		<repository>
 			<id>ipdNexus-public-releases</id>
