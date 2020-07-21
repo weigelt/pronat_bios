@@ -16,3 +16,10 @@ thesis.pdf
 .settings
 .DS_Store
 target/
+
+# IntelliJ IDE
+.idea/*
+*.iws
+*.iml
+*.eml
+/out/
