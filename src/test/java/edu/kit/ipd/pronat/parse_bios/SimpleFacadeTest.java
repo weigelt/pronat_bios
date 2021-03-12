@@ -1,4 +1,4 @@
-package edu.kit.ipd.parse.parsebios;
+package edu.kit.ipd.pronat.parse_bios;
 
 import java.util.Arrays;
 
